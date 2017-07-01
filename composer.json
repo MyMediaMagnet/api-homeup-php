@@ -1,0 +1,25 @@
+{
+    "name": "homeup/homeup-api-php",
+    "description": "Access to the centralized database API.",
+    "keywords": ["api", "mls", "package"],
+    "license": "DBAD",
+    "authors": [
+        {
+            "name": "Troy Jaggard",
+            "email": "info@homeup.ca"
+        }
+    ],
+    "type": "project",
+    "require": {
+		"php": ">=5.4",
+        "guzzlehttp/guzzle": "^6.3"
+    },
+	"require-dev": {
+		"phpunit/phpunit": "5.2.*"
+    },
+	"autoload": {
+        "psr-4": {
+            "HomeUp\\Api\\": "src/"
+        }
+    }
+}
