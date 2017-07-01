@@ -1,15 +1,38 @@
-Composer Library Template
+HomeUP API
 =========================
 
-If you are trying to create a new PHP Composer library, whether it will be going to submitted to packagist.org or just in your Github account, this template of files will surely help you make the process a lot easier and faster.
+API keys are not publicly available.  Please contact us if you would like access.
 
 Features
 --------
 
-* PSR-4 autoloading compliant structure
-* Unit-Testing with PHPUnit
-* Comprehensive Guides and tutorial
-* Easy to use to any framework or even a plain php file
+* Easily query MLS listings from multiple boards in Canada
+* Clean, logic listing formats
+* Intuitive relationships
+* Uses Amazon S3 for storage, other users using Amazon can utilize the "quick copy" feature for images
+
+How To Use
+--------
+
+First, initialize your class with your API keys.  It's suggested you store these values in an environment file
+
+`$homeup = new HomeUp\Api\HomeUp('your_key', 'your_token');`
+
+Then you can simply use any of the following commands to get data from the centralized feed.
+
+To get a list of listings.  Please note, requests with a limit of more than 100 will not include listing images
+
+`$homeup->getListings(['board', 'insert_board_id', 'limit' => 20]);`
+
+To get an individual listing use the following along with the listing ID provided from the API
+
+`$homeup->getListing($listing_id, []);`
+
+To get an individual listings images use the following along with the listing ID provided from the API
+
+`$homeup->getListingImages($listing_id, []);`
 
 
-I encourage that you put more information on this readme file instead of leaving it as is. See [http://www.darwinbiler.com/designing-and-making-the-readme-file-for-your-github-repository/](How to make a README file) for more info.
+
+
+
