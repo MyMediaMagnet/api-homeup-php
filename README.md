@@ -7,8 +7,9 @@ Features
 --------
 
 * Easily query MLS listings from multiple boards in Canada
-* Clean, logic listing formats
+* Clean, logical listing formats
 * Intuitive relationships
+* Google Place data for all listings
 * Uses Amazon S3 for storage, other users using Amazon can utilize the "quick copy" feature for images
 
 How To Use
