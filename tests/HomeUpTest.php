@@ -12,8 +12,19 @@ use HomeUp\Api\HomeUp;
  */
 class HomeUpTest extends PHPUnit_Framework_TestCase{
 
-    protected $key = "b2d5c969052992d990cd58593b9cf903"; // Try if you like, but this key only works locally with a private repo
-    protected $secret = "f9ecddb9d24616513517cf4a49f374300edc9668018ebe01"; // Try if you like, but this secret only works locally with a private repo
+    protected $key;
+    protected $secret;
+
+    public function __construct($name = null, array $data = [], $dataName = '')
+    {
+        parent::__construct($name, $data, $dataName);
+
+        $dotenv = new Dotenv\Dotenv(__DIR__ . "/..");
+        $dotenv->load();
+
+        $this->key = getenv('API_KEY');
+        $this->secret = getenv('API_SECRET');
+    }
 
     /**
      * Test to make sure the class can be called
