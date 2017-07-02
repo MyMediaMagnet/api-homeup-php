@@ -23,7 +23,7 @@ class Request
     {
         $client = new Client();
 
-        $query = ['query' => $query];
+        $query = ['data' => $query];
         $json = json_encode($query);
         $headers = ['Content-Type' => 'application/json', 'key' => $homeup->getKey(), 'secret' => $homeup->getSecret()];
 

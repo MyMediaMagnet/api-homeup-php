@@ -31,10 +31,10 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
      */
     public function testIsThereAnySyntaxError()
     {
-        $var = new HomeUp($this->key, $this->secret);
-        $this->assertTrue(is_object($var));
+        $hu = new HomeUp($this->key, $this->secret);
+        $this->assertTrue(is_object($hu));
 
-        unset($var);
+        unset($hu);
     }
 
     /**
@@ -42,11 +42,11 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
      */
     public function testListingsResponse()
     {
-        $var = new HomeUp($this->key, $this->secret);
+        $hu = new HomeUp($this->key, $this->secret);
 
-        $this->assertTrue(!empty($var->listings()));
+        $this->assertTrue(!empty($hu->listings()));
 
-        unset($var);
+        unset($hu);
     }
 
     /**
@@ -54,13 +54,13 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
      */
     public function testListingValues()
     {
-        $var = new HomeUp($this->key, $this->secret);
+        $hu = new HomeUp($this->key, $this->secret);
 
-        $listings = json_decode($var->listings());
+        $listings = json_decode($hu->listings());
         foreach($listings as $listing)
             $this->assertTrue(!empty($listing->address_display));
 
-        unset($var);
+        unset($hu);
     }
 
     /**
@@ -68,9 +68,9 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
      */
     public function testListingLimitWorksCorrectly()
     {
-        $var = new HomeUp($this->key, $this->secret);
+        $hu = new HomeUp($this->key, $this->secret);
 
-        $listings = json_decode($var->listings(['limit' => 15]));
+        $listings = json_decode($hu->listings(['limit' => 15]));
 
         $count = 0;
         foreach($listings as $listing)
@@ -78,7 +78,7 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
 
         $this->assertTrue($count == 15);
 
-        $listings = json_decode($var->listings());
+        $listings = json_decode($hu->listings());
 
         $count = 0;
         foreach($listings as $listing)
@@ -87,7 +87,7 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
         $this->assertTrue($count == 10);
 
 
-        unset($var);
+        unset($hu);
     }
 
     /**
@@ -95,28 +95,28 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
      */
     public function testListingImagesOnlyAttachedWithLimitUnder100()
     {
-        $var = new HomeUp($this->key, $this->secret);
+        $hu = new HomeUp($this->key, $this->secret);
 
-        $listings = json_decode($var->listings(['limit' => 99]));
+        $listings = json_decode($hu->listings(['limit' => 99]));
 
         foreach($listings as $listing)
             $this->assertTrue(!empty($listing->images[0]));
 
-        $listings = json_decode($var->listings(['limit' => 101]));
+        $listings = json_decode($hu->listings(['limit' => 101]));
 
         foreach($listings as $listing)
             $this->assertNotTrue(!empty($listing->images[0]));
 
-        unset($var);
+        unset($hu);
     }
 
     /**
      * Test a single listing
      */
     public function testSingleListing(){
-        $var = new HomeUp($this->key, $this->secret);
+        $hu = new HomeUp($this->key, $this->secret);
 
-        $listings = json_decode($var->listings());
+        $listings = json_decode($hu->listings());
 
         $id = 0;
         $address = "";
@@ -129,20 +129,20 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
 
         $this->assertTrue($id > 0);
 
-        $listing = json_decode($var->listing($id));
+        $listing = json_decode($hu->listing($id));
 
         $this->assertTrue($listing->address_display == $address);
 
-        unset($var);
+        unset($hu);
     }
 
     /**
      * Test a single listing images
      */
     public function testSingleListingImages(){
-        $var = new HomeUp($this->key, $this->secret);
+        $hu = new HomeUp($this->key, $this->secret);
 
-        $listings = json_decode($var->listings());
+        $listings = json_decode($hu->listings());
 
         $id = 0;
         foreach($listings as $listing)
@@ -153,7 +153,7 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
 
         $this->assertTrue($id > 0);
 
-        $images = json_decode($var->images($id));
+        $images = json_decode($hu->images($id));
 
         $count = 0;
         foreach($images as $image)
@@ -164,21 +164,74 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
 
         $this->assertTrue($count > 0);
 
-        unset($var);
+        unset($hu);
     }
 
     /**
      * Test a single listing images
      */
-    public function testListingCanBeQueried(){
-        $var = new HomeUp($this->key, $this->secret);
+    public function testListingCanBeQueriedWithWhere(){
+        $hu = new HomeUp($this->key, $this->secret);
 
-        $listings = json_decode($var->query()->where('square_feet', '>', 2000)->get());
+        $listings = json_decode($hu->query()->where('square_feet', '>', 2000)->get());
 
         foreach($listings as $listing)
             $this->assertTrue($listing->square_feet > 0);
 
-        unset($var);
+        unset($hu);
+    }
+
+    /**
+     * Test a single listing images
+     */
+    public function testListingCanBeQueriedWithClosure(){
+        $hu = new HomeUp($this->key, $this->secret);
+
+        $listings = json_decode($hu->query()->where(function($query){
+            $query->where('square_feet', '>', 1000);
+        })->limit(100)->get());
+
+        foreach($listings as $listing)
+            $this->assertTrue($listing->square_feet > 1000);
+
+        $listings = json_decode($hu->query()->where(function($query){
+            $query->where('square_feet', '>', 1000);
+            $query->orWhere('price', '<', 500000);
+        })->limit(100)->get());
+
+        foreach($listings as $listing)
+            $this->assertTrue($listing->square_feet > 1000 || $listing->price < 500000);
+
+        unset($hu);
+    }
+
+    /**
+     * Test a single listing images
+     */
+    public function testQueryOrderBy(){
+        $hu = new HomeUp($this->key, $this->secret);
+
+        $listings = json_decode($hu->query()->limit(10)->orderBy('price', 'DESC')->get());
+
+        // The prices should be decreasing, so start really high, and then assert each one is lower than the next
+        $price = 1000000000000;
+        foreach($listings as $listing)
+        {
+            $this->assertTrue($listing->price < $price);
+            $price = $listing->price;
+        }
+
+        $listings = json_decode($hu->query()->limit(10)->orderBy('price', 'ASC')->get());
+
+        // The prices should be decreasing, so start really high, and then assert each one is lower than the next
+        $price = 0;
+        foreach($listings as $listing)
+        {
+            $this->assertTrue($listing->price > $price);
+            $price = $listing->price;
+        }
+
+        unset($hu);
     }
 
 }
