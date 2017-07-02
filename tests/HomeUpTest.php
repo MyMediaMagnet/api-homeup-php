@@ -173,7 +173,7 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
     public function testListingCanBeQueried(){
         $var = new HomeUp($this->key, $this->secret);
 
-        $listings = $var->query()->where('square_feet', '>', 2000)->get();
+        $listings = json_decode($var->query()->where('square_feet', '>', 2000)->get());
 
         foreach($listings as $listing)
             $this->assertTrue($listing->square_feet > 0);
