@@ -162,8 +162,6 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
             $count++;
         }
 
-        $this->assertTrue($count > 0);
-
         unset($hu);
     }
 
