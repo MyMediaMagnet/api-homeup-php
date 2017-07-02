@@ -211,7 +211,7 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
 
         $listings = json_decode($hu->query()->limit(10)->orderBy('price', 'DESC')->get());
 
-        // The prices should be decreasing, so start really high, and then assert each one is lower than the next
+        // The prices should be decreasing, so start really high, and then assert each one is lower than the previous
         $price = 1000000000000;
         foreach($listings as $listing)
         {
@@ -221,7 +221,7 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
 
         $listings = json_decode($hu->query()->limit(10)->orderBy('price', 'ASC')->get());
 
-        // The prices should be decreasing, so start really high, and then assert each one is lower than the next
+        // The prices should be decreasing, so start really high, and then assert each one is lower than the previous
         $price = 0;
         foreach($listings as $listing)
         {
