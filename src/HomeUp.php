@@ -25,6 +25,7 @@ class HomeUp
         $this->key = $key;
         $this->secret = $secret;
     }
+
     /**
      * @param array $query
      * @return \Psr\Http\Message\StreamInterface
