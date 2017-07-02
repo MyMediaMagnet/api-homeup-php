@@ -33,6 +33,10 @@ To get an individual listings images use the following along with the listing ID
 
 `$homeup->images($listing_id, []);`
 
+You can also do a query based on nearly any field in the database
+
+`$homeup->query()->where('square_feet', '>', 2000)->where('price', '<', 1000000)->get();`
+
 
 
 
