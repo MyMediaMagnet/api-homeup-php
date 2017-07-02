@@ -13,27 +13,25 @@ class HomeUp
     private $base_url;
     private $key;
     private $secret;
-
     /**
-     * HomeUp constructor.
+     * Request constructor.
      * @param $key
      * @param $secret
      */
     public function __construct($key, $secret)
     {
-//        $this->base_url = "http://mlslistings.dev";
-        $this->base_url = "http://138.197.152.15";
+        $this->base_url = "http://mlslistings.dev";
+//        $this->base_url = "http://138.197.152.15";
         $this->key = $key;
         $this->secret = $secret;
     }
-
     /**
      * @param array $query
      * @return \Psr\Http\Message\StreamInterface
      */
-    public function getListings($query = [])
+    public function listings($query = [])
     {
-        return $this->guzzle($this->base_url . '/api/v1/listings', $query);
+        return Request::send($this->base_url . '/api/v1/listings', $query, $this);
     }
 
     /**
@@ -41,9 +39,9 @@ class HomeUp
      * @param array $query
      * @return \Psr\Http\Message\StreamInterface
      */
-    public function getListing($id, $query = [])
+    public function listing($id, $query = [])
     {
-        return $this->guzzle($this->base_url . '/api/v1/listings/' . $id, $query);
+        return Request::send($this->base_url . '/api/v1/listings/' . $id, $query, $this);
     }
 
     /**
@@ -51,26 +49,40 @@ class HomeUp
      * @param array $query
      * @return \Psr\Http\Message\StreamInterface
      */
-    public function getListingImages($id, $query = [])
+    public function images($id, $query = [])
     {
-        return $this->guzzle($this->base_url . '/api/v1/listings/' . $id . '/images', $query);
+        return Request::send($this->base_url . '/api/v1/listings/' . $id . '/images', $query, $this);
     }
 
     /**
-     * @param $url
-     * @param $query
-     * @return \Psr\Http\Message\StreamInterface
+     * @return Query
      */
-    private function guzzle($url, $query)
+    public function query()
     {
-        $client = new Client();
+        return new Query($this);
+    }
 
-        $query = ['query' => $query];
-        $json = json_encode($query);
-        $headers = ['Content-Type' => 'application/json', 'key' => $this->key, 'secret' => $this->secret];
+    /**
+     * @return mixed
+     */
+    public function getKey()
+    {
+        return $this->key;
+    }
 
-        $response = $client->get($url, ['headers' => $headers, 'body' => $json]);
+    /**
+     * @return mixed
+     */
+    public function getSecret()
+    {
+        return $this->secret;
+    }
 
-        return $response->getBody();
+    /**
+     * @return mixed
+     */
+    public function getBaseUrl()
+    {
+        return $this->base_url;
     }
 }

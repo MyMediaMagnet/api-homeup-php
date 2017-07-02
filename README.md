@@ -23,15 +23,15 @@ Then you can simply use any of the following commands to get data from the centr
 
 To get a list of listings.  Please note, requests with a limit of more than 100 will not include listing images
 
-`$homeup->getListings(['board', 'insert_board_id', 'limit' => 20]);`
+`$homeup->listings(['board', 'insert_board_id', 'limit' => 20]);`
 
 To get an individual listing use the following along with the listing ID provided from the API
 
-`$homeup->getListing($listing_id, []);`
+`$homeup->listing($listing_id, []);`
 
 To get an individual listings images use the following along with the listing ID provided from the API
 
-`$homeup->getListingImages($listing_id, []);`
+`$homeup->images($listing_id, []);`
 
 
 

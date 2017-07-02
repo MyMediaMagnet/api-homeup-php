@@ -44,7 +44,7 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
     {
         $var = new HomeUp($this->key, $this->secret);
 
-        $this->assertTrue(!empty($var->getListings()));
+        $this->assertTrue(!empty($var->listings()));
 
         unset($var);
     }
@@ -56,7 +56,7 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
     {
         $var = new HomeUp($this->key, $this->secret);
 
-        $listings = json_decode($var->getListings());
+        $listings = json_decode($var->listings());
         foreach($listings as $listing)
             $this->assertTrue(!empty($listing->address_display));
 
@@ -70,7 +70,7 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
     {
         $var = new HomeUp($this->key, $this->secret);
 
-        $listings = json_decode($var->getListings(['limit' => 15]));
+        $listings = json_decode($var->listings(['limit' => 15]));
 
         $count = 0;
         foreach($listings as $listing)
@@ -78,7 +78,7 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
 
         $this->assertTrue($count == 15);
 
-        $listings = json_decode($var->getListings());
+        $listings = json_decode($var->listings());
 
         $count = 0;
         foreach($listings as $listing)
@@ -97,12 +97,12 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
     {
         $var = new HomeUp($this->key, $this->secret);
 
-        $listings = json_decode($var->getListings(['limit' => 99]));
+        $listings = json_decode($var->listings(['limit' => 99]));
 
         foreach($listings as $listing)
             $this->assertTrue(!empty($listing->images[0]));
 
-        $listings = json_decode($var->getListings(['limit' => 101]));
+        $listings = json_decode($var->listings(['limit' => 101]));
 
         foreach($listings as $listing)
             $this->assertNotTrue(!empty($listing->images[0]));
@@ -116,7 +116,7 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
     public function testSingleListing(){
         $var = new HomeUp($this->key, $this->secret);
 
-        $listings = json_decode($var->getListings());
+        $listings = json_decode($var->listings());
 
         $id = 0;
         $address = "";
@@ -129,7 +129,7 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
 
         $this->assertTrue($id > 0);
 
-        $listing = json_decode($var->getListing($id));
+        $listing = json_decode($var->listing($id));
 
         $this->assertTrue($listing->address_display == $address);
 
@@ -142,7 +142,7 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
     public function testSingleListingImages(){
         $var = new HomeUp($this->key, $this->secret);
 
-        $listings = json_decode($var->getListings());
+        $listings = json_decode($var->listings());
 
         $id = 0;
         foreach($listings as $listing)
@@ -153,7 +153,7 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
 
         $this->assertTrue($id > 0);
 
-        $images = json_decode($var->getListingImages($id));
+        $images = json_decode($var->images($id));
 
         $count = 0;
         foreach($images as $image)
@@ -163,6 +163,20 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
         }
 
         $this->assertTrue($count > 0);
+
+        unset($var);
+    }
+
+    /**
+     * Test a single listing images
+     */
+    public function testListingCanBeQueried(){
+        $var = new HomeUp($this->key, $this->secret);
+
+        $listings = $var->query()->where('square_feet', '>', 2000)->get();
+
+        foreach($listings as $listing)
+            $this->assertTrue($listing->square_feet > 0);
 
         unset($var);
     }
