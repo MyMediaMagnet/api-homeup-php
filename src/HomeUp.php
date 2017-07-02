@@ -1,7 +1,5 @@
 <?php namespace HomeUp\Api;
 
-use GuzzleHttp\Client;
-
 /**
 *  Wrapper class for the HomeUp Centralized Database API
 *
