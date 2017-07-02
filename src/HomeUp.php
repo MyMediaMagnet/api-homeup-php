@@ -20,8 +20,8 @@ class HomeUp
      */
     public function __construct($key, $secret)
     {
-        $this->base_url = "http://mlslistings.dev";
-//        $this->base_url = "http://138.197.152.15";
+//        $this->base_url = "http://mlslistings.dev";
+        $this->base_url = "http://138.197.152.15";
         $this->key = $key;
         $this->secret = $secret;
     }
