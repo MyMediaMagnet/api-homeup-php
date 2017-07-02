@@ -185,17 +185,21 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
     public function testListingCanBeQueriedWithClosure(){
         $hu = new HomeUp($this->key, $this->secret);
 
-        $listings = json_decode($hu->query()->where(function($query){
+        $listings = $hu->query()->where(function($query){
             $query->where('square_feet', '>', 1000);
-        })->limit(100)->get());
+        })->limit(100)->get();
+
+        $listings = json_decode($listings);
 
         foreach($listings as $listing)
             $this->assertTrue($listing->square_feet > 1000);
 
-        $listings = json_decode($hu->query()->where(function($query){
+        $listings = $hu->query()->where(function($query){
             $query->where('square_feet', '>', 1000);
             $query->orWhere('price', '<', 500000);
-        })->limit(100)->get());
+        })->limit(100)->get();
+
+        $listings = json_decode($listings);
 
         foreach($listings as $listing)
             $this->assertTrue($listing->square_feet > 1000 || $listing->price < 500000);
