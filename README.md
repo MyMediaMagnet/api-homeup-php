@@ -56,6 +56,16 @@ $homeup->query()->where(function($q){
  )->get();
  ```
 
+Ordering and limits work with queries the following way
+
+```php
+$homeup->query()->where('square_feet', '>', 2000)
+                ->where('price', '<', 1000000)
+                ->orderBy('price', 'DESC')
+                ->limit(10)
+                ->get();
+```
+
 
 
 
