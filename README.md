@@ -47,7 +47,7 @@ Enter the hours in the "removed" method in order to retrieve listings that have 
 $homeup->removed(24);
 ```
 
-####Queries
+#### Queries
 You can also do a query based on nearly any field in the database
 
 ```php
@@ -73,7 +73,7 @@ $homeup->query()->where(function($q){
  )->get();
  ```
 
-####Lookups
+#### Lookups
 
 There are some lookups available to help you pre-populate your database.  These will return a master list according to their name
 
