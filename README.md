@@ -76,7 +76,7 @@ $homeup->query()->where(function($q){
 
 ### Lookups
 
-There are some lookups available to help you pre-populate your database.  These will return a master list according to their name
+There are some lookups available to help you pre-populate your database.  These will return a master list according to their respective name
 
 ```php
 $cities = $homeup->cities();
