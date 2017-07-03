@@ -41,10 +41,26 @@ To get an individual listings images use the following along with the listing ID
 $homeup->images($listing_id, []);
 ```
 
+Enter the hours in the "removed" method in order to retrieve listings that have been taken off the MLS in that timeframe
+
+```php
+$homeup->removed(24);
+```
+
 You can also do a query based on nearly any field in the database
 
 ```php
 $homeup->query()->where('square_feet', '>', 2000)->where('price', '<', 1000000)->get();
+```
+
+Ordering and limits work with queries the following way
+
+```php
+$homeup->query()->where('square_feet', '>', 2000)
+                ->where('price', '<', 1000000)
+                ->orderBy('price', 'DESC')
+                ->limit(10
+                ->get();
 ```
 
 You can also chain where statements.  By default it is an AND, but you can perform an OR statement like so
@@ -55,16 +71,6 @@ $homeup->query()->where(function($q){
     $q->orWhere('price', '<', 500000);
  )->get();
  ```
-
-Ordering and limits work with queries the following way
-
-```php
-$homeup->query()->where('square_feet', '>', 2000)
-                ->where('price', '<', 1000000)
-                ->orderBy('price', 'DESC')
-                ->limit(10)
-                ->get();
-```
 
 
 

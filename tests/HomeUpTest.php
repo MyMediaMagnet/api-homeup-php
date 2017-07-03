@@ -93,7 +93,8 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
     /**
      * Test a single listing
      */
-    public function testSingleListing(){
+    public function testSingleListing()
+    {
         $hu = new HomeUp($this->key, $this->secret);
 
         $listings = json_decode($hu->listings());
@@ -119,7 +120,8 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
     /**
      * Test a single listing images
      */
-    public function testSingleListingImages(){
+    public function testSingleListingImages()
+    {
         $hu = new HomeUp($this->key, $this->secret);
 
         $listings = json_decode($hu->listings());
@@ -148,7 +150,8 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
     /**
      * Test a single listing images
      */
-    public function testListingCanBeQueriedWithWhere(){
+    public function testListingCanBeQueriedWithWhere()
+    {
         $hu = new HomeUp($this->key, $this->secret);
 
         $listings = json_decode($hu->query()->where('square_feet', '>', 2000)->get());
@@ -162,7 +165,8 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
     /**
      * Test a single listing images
      */
-    public function testListingCanBeQueriedWithClosure(){
+    public function testListingCanBeQueriedWithClosure()
+    {
         $hu = new HomeUp($this->key, $this->secret);
 
         $listings = $hu->query()->where(function($query){
@@ -190,7 +194,8 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
     /**
      * Test a single listing images
      */
-    public function testQueryOrderBy(){
+    public function testQueryOrderBy()
+    {
         $hu = new HomeUp($this->key, $this->secret);
 
         $listings = json_decode($hu->query()->limit(10)->orderBy('price', 'DESC')->get());
@@ -211,6 +216,27 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
         {
             $this->assertTrue($listing->price >= $price);
             $price = $listing->price;
+        }
+
+        unset($hu);
+    }
+
+    /**
+     * Test to make sure removed listings can be retrieved
+     */
+    public function testRemovedListingsCanBeRetrieved()
+    {
+        $hu = new HomeUp($this->key, $this->secret);
+
+        $listings = json_decode($hu->removed(24));
+
+        $yesterday = \Carbon\Carbon::now()->subDay();
+
+        foreach($listings as $listing)
+        {
+            $deleted_at = \Carbon\Carbon::parse($listing->deleted_at);
+
+            $this->assertTrue($deleted_at->gte($yesterday));
         }
 
         unset($hu);

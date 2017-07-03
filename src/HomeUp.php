@@ -1,5 +1,7 @@
 <?php namespace HomeUp\Api;
 
+use Carbon\Carbon;
+
 /**
 *  Wrapper class for the HomeUp Centralized Database API
 *
@@ -54,6 +56,19 @@ class HomeUp
     public function images($id, $query = [])
     {
         return Request::send($this->base_url . '/api/v1/listings/' . $id . '/images', $query, $this);
+    }
+
+    /**
+     * @param int $hours
+     * @return \Psr\Http\Message\StreamInterface
+     */
+    public function removed($hours)
+    {
+        $since = Carbon::now()->subHours($hours);
+
+        $query = ['since' => $since->timestamp];
+
+        return Request::send($this->base_url . '/api/v1/listings/removed', $query, $this);
     }
 
     /**
