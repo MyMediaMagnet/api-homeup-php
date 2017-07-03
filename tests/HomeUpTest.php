@@ -22,8 +22,8 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
         $dotenv = new Dotenv\Dotenv(__DIR__ . "/..");
         $dotenv->load();
 
-        $this->key = getenv('API_KEY');
-        $this->secret = getenv('API_SECRET');
+        $this->key = getenv('HOMEUP_API_KEY');
+        $this->secret = getenv('HOMEUP_API_SECRET');
     }
 
     /**
@@ -86,26 +86,6 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
 
         $this->assertTrue($count == 10);
 
-
-        unset($hu);
-    }
-
-    /**
-     * Test to make sure the limit works correctly
-     */
-    public function testListingImagesOnlyAttachedWithLimitUnder100()
-    {
-        $hu = new HomeUp($this->key, $this->secret);
-
-        $listings = json_decode($hu->listings(['limit' => 99]));
-
-        foreach($listings as $listing)
-            $this->assertTrue(!empty($listing->images[0]));
-
-        $listings = json_decode($hu->listings(['limit' => 101]));
-
-        foreach($listings as $listing)
-            $this->assertNotTrue(!empty($listing->images[0]));
 
         unset($hu);
     }
@@ -219,17 +199,17 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
         $price = 1000000000000;
         foreach($listings as $listing)
         {
-            $this->assertTrue($listing->price < $price);
+            $this->assertTrue($listing->price <= $price);
             $price = $listing->price;
         }
 
-        $listings = json_decode($hu->query()->limit(10)->orderBy('price', 'ASC')->get());
+        $listings = json_decode($hu->query()->limit(20)->orderBy('price', 'ASC')->get());
 
-        // The prices should be decreasing, so start really high, and then assert each one is lower than the previous
+        // The prices should be increasing, so start at 0, and then assert each one is greater than the previous
         $price = 0;
         foreach($listings as $listing)
         {
-            $this->assertTrue($listing->price > $price);
+            $this->assertTrue($listing->price >= $price);
             $price = $listing->price;
         }
 
