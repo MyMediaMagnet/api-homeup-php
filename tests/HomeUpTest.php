@@ -242,4 +242,40 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
         unset($hu);
     }
 
+    /**
+     *
+     */
+    public function testLookupsCanBeRetrieved()
+    {
+        $hu = new HomeUp($this->key, $this->secret);
+
+        $cities = json_decode($hu->cities());
+
+        foreach($cities as $city)
+        {
+            $this->assertTrue(!empty($city->name));
+        }
+
+        $communities = json_decode($hu->communities());
+
+        foreach($communities as $community)
+        {
+            $this->assertTrue(!empty($community->name));
+        }
+
+        $realtors = json_decode($hu->realtors());
+
+        foreach($realtors as $realtor)
+        {
+            $this->assertTrue(!empty($realtor->name));
+        }
+
+        $firms = json_decode($hu->firms());
+
+        foreach($firms as $firm)
+        {
+            $this->assertTrue(!empty($firm->name));
+        }
+    }
+
 }

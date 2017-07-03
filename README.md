@@ -47,6 +47,7 @@ Enter the hours in the "removed" method in order to retrieve listings that have 
 $homeup->removed(24);
 ```
 
+####Queries
 You can also do a query based on nearly any field in the database
 
 ```php
@@ -70,6 +71,23 @@ $homeup->query()->where(function($q){
     $q->where('square_feet', '>', 1000);
     $q->orWhere('price', '<', 500000);
  )->get();
+ ```
+
+####Lookups
+
+There are some lookups available to help you pre-populate your database.  These will return a master list according to their name
+
+```php
+$homeup->->cities();
+ ```
+```php
+$homeup->->communities();
+ ```
+```php
+$homeup->->realtors();
+ ```
+```php
+$homeup->->firms();
  ```
 
 

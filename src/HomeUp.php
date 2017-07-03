@@ -72,6 +72,38 @@ class HomeUp
     }
 
     /**
+     * @return \Psr\Http\Message\StreamInterface
+     */
+    public function cities()
+    {
+        return Request::send($this->base_url . '/api/v1/lookup/cities', [], $this);
+    }
+
+    /**
+     * @return \Psr\Http\Message\StreamInterface
+     */
+    public function communities()
+    {
+        return Request::send($this->base_url . '/api/v1/lookup/communities', [], $this);
+    }
+
+    /**
+     * @return \Psr\Http\Message\StreamInterface
+     */
+    public function realtors()
+    {
+        return Request::send($this->base_url . '/api/v1/lookup/realtors', [], $this);
+    }
+
+    /**
+     * @return \Psr\Http\Message\StreamInterface
+     */
+    public function firms()
+    {
+        return Request::send($this->base_url . '/api/v1/lookup/firms', [], $this);
+    }
+
+    /**
      * @return Query
      */
     public function query()
