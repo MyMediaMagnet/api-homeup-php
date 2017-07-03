@@ -6,8 +6,9 @@ API keys are not publicly available.  Please contact us if you would like access
 Features
 --------
 
-* Easily query MLS listings from multiple boards in Canada
+* Easily query listings from multiple boards in Canada
 * Clean, logical listing formats
+* Normalized data across multiple boards
 * Intuitive relationships
 * Google Place data for all listings
 * Uses Amazon S3 for storage, other users using Amazon can utilize the "quick copy" feature for images
