@@ -78,16 +78,10 @@ $homeup->query()->where(function($q){
 There are some lookups available to help you pre-populate your database.  These will return a master list according to their name
 
 ```php
-$homeup->->cities();
- ```
-```php
-$homeup->->communities();
- ```
-```php
-$homeup->->realtors();
- ```
-```php
-$homeup->->firms();
+$cities = $homeup->cities();
+$communities = $homeup->communities();
+$realtors = $homeup->realtors();
+$firms = $homeup->firms();
  ```
 
 
