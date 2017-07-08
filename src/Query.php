@@ -125,4 +125,15 @@ class Query
         ];
         return Request::send($this->homeup->getBaseUrl() . '/api/v1/listings/query', $data, $this->homeup);
     }
+
+    /**
+     * @return \Psr\Http\Message\StreamInterface
+     */
+    public function count()
+    {
+        $data = [
+            'query' => $this->query,
+        ];
+        return Request::send($this->homeup->getBaseUrl() . '/api/v1/listings/count', $data, $this->homeup);
+    }
 }

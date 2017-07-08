@@ -278,4 +278,19 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
         }
     }
 
+    /**
+     *
+     */
+    public function testCountCanBeRetrieved()
+    {
+        $hu = new HomeUp($this->key, $this->secret);
+
+        $listings = json_decode($hu->query()->count());
+
+        var_dump($listings);
+        $this->assertTrue($listings > 0);
+
+        unset($hu);
+    }
+
 }
