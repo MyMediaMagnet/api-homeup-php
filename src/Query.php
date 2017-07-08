@@ -11,6 +11,7 @@ class Query
     private $homeup;
     private $order_by = "id";
     private $order_direction = "DESC";
+    private $offset = 0;
 
     /**
      * Query constructor.
@@ -100,6 +101,17 @@ class Query
     }
 
     /**
+     * @param $offset
+     * @return $this
+     */
+    public function offset($offset)
+    {
+        $this->offset = $offset;
+
+        return $this;
+    }
+
+    /**
      * @param $order_by
      * @param $direction
      * @return $this
@@ -121,7 +133,8 @@ class Query
             'query' => $this->query,
             'limit' => $this->limit,
             'order_by' => $this->order_by,
-            'order_direction' => $this->order_direction
+            'order_direction' => $this->order_direction,
+            'offset' => $this->offset
         ];
         return Request::send($this->homeup->getBaseUrl() . '/api/v1/listings/query', $data, $this->homeup);
     }

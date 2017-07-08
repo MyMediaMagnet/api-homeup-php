@@ -293,4 +293,39 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
         unset($hu);
     }
 
+    /**
+     *
+     */
+    public function testOffsetCanBeSet()
+    {
+        $hu = new HomeUp($this->key, $this->secret);
+
+        $query = $hu->query();
+        $listing_count = json_decode($query->count());
+
+        $prev_listing_address = "";
+        $count = 0;
+        $offset = 0;
+        $limit = 100;
+        while($offset < $listing_count)
+        {
+            $listings = json_decode($query->offset($offset)->limit($limit)->get());
+
+            foreach($listings as $listing)
+            {
+                $this->assertTrue($listing->address_display != $prev_listing_address);
+                $prev_listing_address = $listing->address_display;
+
+                break;
+            }
+
+            $count++;
+            $offset = $count * $limit;
+        }
+
+        $this->assertTrue($listings > 0);
+
+        unset($hu);
+    }
+
 }
