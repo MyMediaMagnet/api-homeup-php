@@ -21,6 +21,7 @@ class Query
     public function __construct(HomeUp $homeup)
     {
         $this->homeup = $homeup;
+        $this->setBoard();
     }
 
     /**
@@ -142,8 +143,6 @@ class Query
      */
     public function get()
     {
-        $this->setBoard();
-
         $data = [
             'query' => $this->query,
             'limit' => $this->limit,
@@ -177,10 +176,12 @@ class Query
 
         $selected_board = null;
         foreach ($boards as $key => $value)
+        {
             if ($this->board == $key) {
                 $selected_board = $value;
                 continue;
             }
+        }
 
         if (empty($selected_board))
             throw new \Exception("Board not found");
