@@ -18,15 +18,19 @@ class HomeUp
      * @param $key
      * @param $secret
      */
-    public function __construct($key, $secret)
+    public function __construct($key = null, $secret = null)
     {
         $this->base_url = "http://138.197.152.15";
 
         if(!empty(getenv('HOMEUP_BASE_URL')))
             $this->base_url = getenv('HOMEUP_BASE_URL');
 
-        $this->key = $key;
-        $this->secret = $secret;
+        $this->key = getenv('HOMEUP_API_KEY');
+        $this->secret = getenv('HOMEUP_API_SECRET');
+        if(!empty($key))
+            $this->key = $key;
+        if(!empty($secret))
+            $this->secret = $secret;
     }
 
     /**
@@ -49,13 +53,13 @@ class HomeUp
     }
 
     /**
-     * @param $id
+     * @param $mls_id
      * @param array $query
      * @return \Psr\Http\Message\StreamInterface
      */
-    public function images($id, $query = [])
+    public function images($mls_id, $query = [])
     {
-        return Request::send($this->base_url . '/api/v1/listings/' . $id . '/images', $query, $this);
+        return Request::send($this->base_url . '/api/v1/listings/' . $mls_id . '/images', $query, $this);
     }
 
     /**
