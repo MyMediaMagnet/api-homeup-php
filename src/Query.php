@@ -12,6 +12,7 @@ class Query
     private $order_by = "id";
     private $order_direction = "DESC";
     private $offset = 0;
+    private $board = 'creb';
 
     /**
      * Query constructor.
@@ -20,6 +21,17 @@ class Query
     public function __construct(HomeUp $homeup)
     {
         $this->homeup = $homeup;
+    }
+
+    /**
+     * @param $board
+     * @return $this
+     */
+    public function whereBoard($board)
+    {
+        $this->board = $board;
+
+        return $this;
     }
 
     /**
@@ -126,9 +138,12 @@ class Query
 
     /**
      * @return \Psr\Http\Message\StreamInterface
+     * @throws \Exception
      */
     public function get()
     {
+        $this->setBoard();
+
         $data = [
             'query' => $this->query,
             'limit' => $this->limit,
@@ -136,6 +151,7 @@ class Query
             'order_direction' => $this->order_direction,
             'offset' => $this->offset
         ];
+
         return Request::send($this->homeup->getBaseUrl() . '/api/v1/listings/query', $data, $this->homeup);
     }
 
@@ -148,5 +164,27 @@ class Query
             'query' => $this->query,
         ];
         return Request::send($this->homeup->getBaseUrl() . '/api/v1/listings/count', $data, $this->homeup);
+    }
+
+    private function setBoard()
+    {
+        $boards = [
+            'crea' => 'App\\CreaListing',  // Canadian Feed
+            'creb' => 'App\\CrebListing',  // Calgary Feed
+            'rae' => 'App\\ErebListing',  // Edmonton Feed
+            'ereb' => 'App\\ErebListing',  // Edmonton Feed
+        ];
+
+        $selected_board = null;
+        foreach ($boards as $key => $value)
+            if ($this->board == $key) {
+                $selected_board = $value;
+                continue;
+            }
+
+        if (empty($selected_board))
+            throw new \Exception("Board not found");
+
+        $this->where('listingable_type', '=', $selected_board);
     }
 }

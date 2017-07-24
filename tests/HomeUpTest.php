@@ -57,8 +57,11 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
         $hu = new HomeUp($this->key, $this->secret);
 
         $listings = json_decode($hu->listings());
+
         foreach($listings as $listing)
-            $this->assertTrue(!empty($listing->address_display));
+        {
+            $this->assertTrue(!empty($listing->mls_id));
+        }
 
         unset($hu);
     }
@@ -327,6 +330,50 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
                 $count++;
                 $offset = $count * $limit;
             }
+        }
+
+        unset($hu);
+    }
+
+    /**
+     *
+     */
+    public function testBoardCanBeSet()
+    {
+        $hu = new HomeUp($this->key, $this->secret);
+
+        $query = $hu->query();
+        $listings = json_decode($query->whereBoard('creb')->get());
+        foreach($listings as $listing)
+        {
+            $this->assertTrue($listing->listingable_type == 'App\\CrebListing');
+        }
+
+        $hu = new HomeUp($this->key, $this->secret);
+
+        $query = $hu->query();
+        $listings = json_decode($query->whereBoard('crea')->get());
+        foreach($listings as $listing)
+        {
+            $this->assertTrue($listing->listingable_type == 'App\\CreaListing');
+        }
+
+        unset($hu);
+    }
+
+    /**
+     *
+     */
+    public function testCreaListingsCanBeQueriedByCity()
+    {
+        $hu = new HomeUp($this->key, $this->secret);
+
+        $query = $hu->query();
+        $listings = json_decode($query->whereBoard('crea')->where('city_name', '=', 'Victoria')->get());
+        foreach($listings as $listing)
+        {
+            $this->assertTrue($listing->listingable_type == 'App\\CreaListing');
+            $this->assertTrue($listing->city_name == 'Victoria');
         }
 
         unset($hu);
