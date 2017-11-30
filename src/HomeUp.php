@@ -68,7 +68,7 @@ class HomeUp
      */
     public function removed($hours)
     {
-        $since = Carbon::now()->subHours($hours);
+        $since = Carbon::now('America/Edmonton')->subHours($hours);
 
         $query = ['since' => $since->timestamp];
 

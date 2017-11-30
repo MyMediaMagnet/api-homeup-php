@@ -233,11 +233,11 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
 
         $listings = json_decode($hu->removed(24));
 
-        $yesterday = \Carbon\Carbon::now()->subDay();
+        $yesterday = \Carbon\Carbon::now('America/Edmonton')->subHours(24);
 
         foreach($listings as $listing)
         {
-            $deleted_at = \Carbon\Carbon::parse($listing->deleted_at);
+            $deleted_at = \Carbon\Carbon::parse($listing->deleted_at)->setTimezone('America/Edmonton');
 
             $this->assertTrue($deleted_at->gte($yesterday));
         }
@@ -355,6 +355,7 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
         $listings = json_decode($query->whereBoard('crea')->get());
         foreach($listings as $listing)
         {
+            var_dump($listing->listingable_type);
             $this->assertTrue($listing->listingable_type == 'App\\CreaListing');
         }
 
@@ -374,6 +375,22 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
         {
             $this->assertTrue($listing->listingable_type == 'App\\CreaListing');
             $this->assertTrue($listing->city_name == 'Victoria');
+        }
+
+        unset($hu);
+    }
+
+    public function testImagesCanBeRetrieved()
+    {
+        $hu = new HomeUp($this->key, $this->secret);
+
+        $query = json_decode($hu->images('C4076238'));
+
+        $images = $query->images;
+
+        foreach($images as $image)
+        {
+            $this->assertNotEmpty($image);
         }
 
         unset($hu);

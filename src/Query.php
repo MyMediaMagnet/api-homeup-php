@@ -31,6 +31,7 @@ class Query
     public function whereBoard($board)
     {
         $this->board = $board;
+        $this->setBoard();
 
         return $this;
     }
@@ -165,6 +166,9 @@ class Query
         return Request::send($this->homeup->getBaseUrl() . '/api/v1/listings/count', $data, $this->homeup);
     }
 
+    /**
+     * @throws \Exception
+     */
     private function setBoard()
     {
         $boards = [
