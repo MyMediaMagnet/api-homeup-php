@@ -365,6 +365,25 @@ class HomeUpTest extends PHPUnit_Framework_TestCase{
     /**
      *
      */
+    public function testBoardCanBeSetTwice()
+    {
+        $hu = new HomeUp($this->key, $this->secret);
+
+        $query = $hu->query();
+        $query = $query->whereBoard('creb')->whereBoard('crea');
+
+        foreach($query->get() as $listing)
+        {
+            var_dump($listing->listingable_type);
+            $this->assertTrue($listing->listingable_type == 'App\\CreaListing');
+        }
+
+        unset($hu);
+    }
+
+    /**
+     *
+     */
     public function testCreaListingsCanBeQueriedByCity()
     {
         $hu = new HomeUp($this->key, $this->secret);
