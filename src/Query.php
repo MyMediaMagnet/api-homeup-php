@@ -190,6 +190,16 @@ class Query
         if (empty($selected_board))
             throw new \Exception("Board not found");
 
+        $existing = false;
+        foreach($this->query as $query)
+        {
+          if($query['column'] == 'listingable_type')
+          {
+              $query['column'] = $selected_board;
+              $existing = true;
+          }
+        }
+
         $this->where('listingable_type', '=', $selected_board);
     }
 }
