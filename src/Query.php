@@ -21,7 +21,6 @@ class Query
     public function __construct(HomeUp $homeup)
     {
         $this->homeup = $homeup;
-        $this->setBoard();
     }
 
     /**
@@ -190,17 +189,6 @@ class Query
         if (empty($selected_board))
             throw new \Exception("Board not found");
 
-        $existing = false;
-        foreach($this->query as &$query)
-        {
-          if($query['column'] == 'listingable_type')
-          {
-              $query['value'] = $selected_board;
-              $existing = true;
-          }
-        }
-
-        if(!$existing)
-          $this->where('listingable_type', '=', $selected_board);
+        $this->where('listingable_type', '=', $selected_board);
     }
 }
