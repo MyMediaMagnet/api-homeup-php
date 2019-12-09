@@ -2,7 +2,7 @@
     "name": "mymediamagnet/homeup-api-php",
     "description": "Access to the centralized database API.",
     "keywords": ["api", "mls", "package"],
-    "license": "DBAD",
+    "license": "MIT",
     "authors": [
         {
             "name": "Troy Jaggard",
