@@ -108,6 +108,16 @@ class HomeUp
     }
 
     /**
+     * @param $mls_id
+     * @param array $query
+     * @return \Psr\Http\Message\StreamInterface
+     */
+    public function check($mls_id, $query = [])
+    {
+        return Request::send($this->base_url . '/api/v1/listings/' . $mls_id . '/check', $query, $this);
+    }
+
+    /**
      * @return Query
      */
     public function query()
